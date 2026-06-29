@@ -2,37 +2,37 @@ name: Auto Build Converter
 
 on:
   push:
-    branches: [ master, main ]
-  schedule:
-    - cron: '0 0 * * 0'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 7'
 
 jobs:
   build-windows:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup Python
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
-      shell: powershell
+    - name: Install dependencies from script
       run: |
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-        ./installResources.ps1
+        powershell -ExecutionPolicy Bypass -File .\installResources.ps1
+        pip install pyinstaller pyyaml
 
     - name: Compile EXE
-      shell: powershell
       run: |
-        pyinstaller.exe --onefile converter.py
+        pyinstaller --onefile --noconsole converter.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: Gotowy_Program_EXE
+        name: Converter-Windows-EXE
         path: dist/converter.exe
