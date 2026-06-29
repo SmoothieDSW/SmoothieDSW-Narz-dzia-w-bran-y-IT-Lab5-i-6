@@ -23,6 +23,7 @@ jobs:
     - name: Install dependencies
       shell: powershell
       run: |
+        Set-ExecutionPolicy Bypass -Scope Process -Force
         ./installResources.ps1
 
     - name: Compile EXE
