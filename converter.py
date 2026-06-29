@@ -353,7 +353,11 @@ def main():
 
         app = ConverterApp(root)
 
-        root.mainloop()if __name__ == "__main__":
+        root.mainloop()
+
+
+
+if __name__ == "__main__":
 
     main()
 
